@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
+contract Liquior{
+    mapping(address => uint) public age;
+
+    mapping (address => bool ) public ownsLiqour;
+
+    function setAge(uint _age) public {
+        require (_age > 0 && _age < 150, "invalid age provided");
+
+        age[msg.sender] = _age;
+    }
+
+    function setLiqourOwnership(bool _ownsLiqour) public{
+        ownsLiqour[msg.sender] = _ownsLiqour;
+    }
+    function checkEligiblity() public view returns (bool){
+        uint userAge = age[msg.sender];
+        bool LiqourOwnership = ownsLiqour[msg.sender];
+
+        require(userAge > 0, "Age is not set. Please set tyour age first");
+
+        if(userAge < 18){
+            revert("you are not eleigible for driving license");
+        }
+        assert(LiqourOwnership == true);
+        return true;
+    }
+}
